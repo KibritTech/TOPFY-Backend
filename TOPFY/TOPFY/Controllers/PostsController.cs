@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DomainModels.Dtos;
 using DomainModels.Dtos.PostDtos;
 using DomainModels.Dtos.TagDtos;
+using DomainModels.Dtos.UserDtos;
 using DomainModels.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -42,7 +45,20 @@ namespace TOPFY.Controllers
                     posts.AddRange(temp);
                 }
             }
-            ExplorerPageDto dto = new(currentPage, count,_mapper.Map<List<PostDto>>(posts),listOfTags);
+            List<PostDto> list = new();
+            foreach (Post item in posts)
+            {
+                list.Add(new PostDto { 
+                Id=item.Id,
+                MainTagName=(await _unitOfWork.Tags.GetByIdAsync(item.MainTagId)).Name,
+                SpecificTags= _mapper.Map<List<TagDto>>(item.SpecificTags),
+                Description=item.Description,
+                MainImage=item.MainImage,
+                MainTagId=item.MainTagId,
+                User=_mapper.Map<UserDto>(item.User)
+                });
+            }
+            ExplorerPageDto dto = new(currentPage, count,list,listOfTags);
             return Ok(dto);
         }
     }

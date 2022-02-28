@@ -24,9 +24,11 @@ namespace TOPFY
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _env;
+        public Startup(IConfiguration configuration, IWebHostEnvironment Env)
         {
             Configuration = configuration;
+            _env = Env;
         }
 
         public IConfiguration Configuration { get; }
@@ -76,6 +78,11 @@ namespace TOPFY
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TOPFY", Version = "v1" });
             });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("", 
+                    builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -88,8 +95,13 @@ namespace TOPFY
             }
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseStaticFiles();
             app.UseAuthentication();
             app.Seed();
+            app.UseCors((o)=> {
+                o.AllowAnyHeader()
+                .AllowAnyMethod().SetIsOriginAllowed(r=>true).AllowCredentials();
+            });
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
