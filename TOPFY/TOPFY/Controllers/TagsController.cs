@@ -5,6 +5,7 @@ using DomainModels.Dtos;
 using DomainModels.Dtos.TagDtos;
 using DomainModels.Models;
 using Microsoft.AspNetCore.Mvc;
+using Repository.DAL;
 using Repository.Services.Abstarction;
 
 namespace TOPFY.Controllers
@@ -16,10 +17,13 @@ namespace TOPFY.Controllers
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public TagsController(IUnitOfWork unitOfWork,IMapper mapper)
+        private readonly AppDbContext dbContext;
+
+        public TagsController(IUnitOfWork unitOfWork,IMapper mapper,AppDbContext context)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            dbContext = context;
         }
         [HttpPost]
         public async Task<IActionResult> GetPopularTags([FromQuery]int count)
@@ -30,7 +34,7 @@ namespace TOPFY.Controllers
             {
                 ICollection<Tag> childTags = await _unitOfWork.Tags
                     .FindAllAsync(t => t.ParentTag == tag&&!t.IsDeleted);
-                dto.Tags.Add(new ParentChildrenTagDto { ParentTagId=tag.Id,ParentTagName=tag.Name,
+                dto.Tags.Add(new ParentChildrenTagDto { Id=tag.Id,Name=tag.Name,
                     ChildrenTags = _mapper.Map<ICollection<TagDto>>(childTags)});
             }
             return Ok(dto);

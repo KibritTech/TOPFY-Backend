@@ -54,6 +54,30 @@ namespace Repository.Migrations
                     b.ToTable("Posts");
                 });
 
+            modelBuilder.Entity("DomainModels.Models.SiteInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SiteInfos");
+                });
+
             modelBuilder.Entity("DomainModels.Models.Tag", b =>
                 {
                     b.Property<int>("Id")

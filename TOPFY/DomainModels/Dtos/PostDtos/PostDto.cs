@@ -11,6 +11,7 @@ namespace DomainModels.Dtos.PostDtos
         public string Description { get; set; }
         public UserDto User{ get; set; }
         public int MainTagId { get; set; }
+        public string MainTagName { get; set; }
         public ICollection<TagDto> SpecificTags { get; set; }
     }
 }

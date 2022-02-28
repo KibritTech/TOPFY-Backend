@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DomainModels.Dtos.PostDtos;
 using DomainModels.Dtos.TagDtos;
-
 namespace DomainModels.Dtos
 {
     public class ExplorerPageDto

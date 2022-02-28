@@ -30,7 +30,7 @@ namespace Repository.Services.Implementation
             return await context.Set<T>().ToListAsync();
         }
 
-        public virtual async Task<T> GetByIdAsync(string id)
+        public virtual async Task<T> GetByIdAsync(int id)
         {
             return await dbSet.FindAsync(id);
         }

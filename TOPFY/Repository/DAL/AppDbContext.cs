@@ -10,5 +10,6 @@ namespace Repository.DAL
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<UserConnection> UserConnections { get; set; }
+        public DbSet<SiteInfo> SiteInfos { get; set; }
     }
 }
